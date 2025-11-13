@@ -1,10 +1,12 @@
 import type { Field } from 'payload'
 
 import {
+  EXPERIMENTAL_TableFeature,
   FixedToolbarFeature,
   HeadingFeature,
   InlineToolbarFeature,
   lexicalEditor,
+  OrderedListFeature,
 } from '@payloadcms/richtext-lexical'
 
 import { linkGroup } from '@/fields/linkGroup'
@@ -13,6 +15,19 @@ export const hero: Field = {
   name: 'hero',
   type: 'group',
   fields: [
+    {
+      name: 'heading',
+      label: 'Heading',
+      type: 'text',
+      required: false,
+    },
+    {
+      name: 'heroImage',
+      label: 'Hero Image',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
     {
       name: 'type',
       type: 'select',
@@ -42,16 +57,15 @@ export const hero: Field = {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ rootFeatures }) => {
-          return [
-            ...rootFeatures,
-            HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-            FixedToolbarFeature(),
-            InlineToolbarFeature(),
-          ]
-        },
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          EXPERIMENTAL_TableFeature(),
+          OrderedListFeature(),
+        ],
       }),
-      label: false,
     },
     linkGroup({
       overrides: {

@@ -2,12 +2,43 @@
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
-
+import React, { useEffect, useRef, useState } from 'react'
 import type { Header } from '@/payload-types'
-
 import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
+import Lenis from '@studio-freight/lenis'
+import Image from 'next/image'
+
+/* small helper types for local use (optional — Header from payload-types is authoritative) */
+type Media = {
+  url?: string | null
+  alt?: string | null
+  width?: number | string | null
+  height?: number | string | null
+}
+
+type LinkObj = {
+  type?: string | null
+  url?: string | null
+  label?: string | null
+  target?: '_self' | '_blank' | null
+  newTab?: boolean | null
+  appearance?: string | null
+}
+
+type LinkWrapper = {
+  link?: LinkObj | null
+  id?: string
+}
+
+type MenuItem = {
+  link?: {
+    label?: string | null
+    url?: string | null
+    target?: '_self' | '_blank' | null
+  } | null
+  submenus?: unknown[] | null
+  id?: string | null
+}
 
 interface HeaderClientProps {
   data: Header
@@ -18,25 +49,174 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
+  const [isOpen, setIsOpen] = useState(false)
 
-  useEffect(() => {
-    setHeaderTheme(null)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pathname])
+  // Lenis ref typed
+  // types for refs earlier
+  const lenisRef = useRef<Lenis | null>(null)
 
-  useEffect(() => {
-    if (headerTheme && headerTheme !== theme) setTheme(headerTheme)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [headerTheme])
+  // typed handler
+  const handleSmoothScroll = (e: React.MouseEvent, targetId?: string) => {
+    if (!targetId) return
+    // if not an anchor (like '#section') don't try smooth scroll
+    if (!targetId.startsWith('#')) return
+
+    e.preventDefault()
+
+    const el = document.querySelector(targetId)
+
+    if (el && lenisRef.current) {
+      // ensure el is an HTMLElement before passing to Lenis
+      if (el instanceof HTMLElement) {
+        lenisRef.current.scrollTo(el, {
+          offset: -80,
+          duration: 1.2,
+        })
+      } else {
+        // fallback: pass the selector string to Lenis or use native scrolling
+        // Lenis.scrollTo accepts a selector string as well
+        lenisRef.current.scrollTo(targetId, {
+          offset: -80,
+          duration: 1.2,
+        })
+      }
+    } else if (el) {
+      // if Lenis not available, fallback to native
+      if (el instanceof HTMLElement) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }
+
+    setIsOpen(false)
+  }
+
+  // safe accessors / defaults
+  const menus: MenuItem[] = (data?.menus as unknown as MenuItem[]) || []
+  const topLinks: LinkWrapper[] = (data?.links as unknown as LinkWrapper[]) || []
 
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link>
-        <HeaderNav data={data} />
-      </div>
-    </header>
+    <>
+      <header className="py-31 sticky top-0 bg-white z-[99]">
+        <div className="container">
+          <div className="flex justify-between items-center gap-50">
+            <Link href="/">
+              <Logo
+                loading="eager"
+                priority="high"
+                className="dark:invert-0 w-100 xl:w-135"
+                logosrc={(data?.Header_Logo as Media | undefined)?.url || ''}
+              />
+            </Link>
+
+            <nav id="menu" className="xl:block hidden" role="navigation" aria-label="menü">
+              <ul className="flex justify-center items-center gap-48 [&_li>a]:text-primary [&_li>a]:font-outfit [&_li>a]:text-base font-light">
+                {menus.length > 0 &&
+                  menus.map((menu, index) => {
+                    const menuUrl = (menu?.link?.url ?? '/') as string
+                    const isAnchor = typeof menuUrl === 'string' && menuUrl.startsWith('#')
+                    const isActive =
+                      pathname === menuUrl || (menuUrl !== '/' && pathname.startsWith(menuUrl))
+
+                    return (
+                      <li key={menu.id ?? index}>
+                        {isAnchor ? (
+                          <a
+                            href={menuUrl}
+                            onClick={(e) => handleSmoothScroll(e as React.MouseEvent, menuUrl)}
+                            className={`${isActive ? 'active' : 'text-primary'} transition-all duration-200`}
+                          >
+                            {menu?.link?.label ?? ''}
+                          </a>
+                        ) : (
+                          <Link
+                            href={menuUrl}
+                            aria-label={menu?.link?.label ?? ''}
+                            aria-roledescription="link"
+                            target={(menu?.link?.target as string) || '_self'}
+                            className={`${isActive ? 'active' : 'text-primary'} transition-all duration-200`}
+                          >
+                            {menu?.link?.label ?? ''}
+                          </Link>
+                        )}
+                      </li>
+                    )
+                  })}
+              </ul>
+            </nav>
+
+            <div className="flex justify-end items-center gap-16 md:gap-24">
+              {topLinks.map((linkItem, idx) => {
+                const linkObj = linkItem?.link
+                if (!linkObj?.url) return null
+                const href = linkObj.url
+                // prefer boolean newTab OR explicit target
+                const openInNewTab = !!linkObj.newTab || linkObj.target === '_blank'
+                const target = openInNewTab ? '_blank' : undefined
+                const rel = openInNewTab ? 'noopener noreferrer' : undefined
+
+                return (
+                  <Link
+                    key={linkItem.id ?? idx}
+                    href={href}
+                    onClick={(e) => handleSmoothScroll(e as React.MouseEvent, href)}
+                    target={target}
+                    rel={rel}
+                    aria-label={`${linkObj.label ?? ''} – Startseite`}
+                    className="btn-dark !hidden sm:!block"
+                  >
+                    <span>{linkObj.label ?? ''}</span>
+                  </Link>
+                )
+              })}
+
+              {topLinks.map((linkItem, idx) => {
+                const linkObj = linkItem?.link
+                if (!linkObj?.url) return null
+                const href = linkObj.url
+                const openInNewTab = !!linkObj.newTab || linkObj.target === '_blank'
+                const target = openInNewTab ? '_blank' : undefined
+                const rel = openInNewTab ? 'noopener noreferrer' : undefined
+
+                return (
+                  <Link
+                    key={`mobile-${linkItem.id ?? idx}`}
+                    href={href}
+                    target={target}
+                    rel={rel}
+                    aria-label="Kontaktieren Sie uns – Startseite"
+                    className="bg-black p-4 rounded-sm !block sm:!hidden"
+                  >
+                    <Image
+                      src="/images/phone.svg"
+                      alt="phone icon"
+                      role="img"
+                      width={50}
+                      height={50}
+                      className="w-30 h-30 block sm:hidden"
+                    />
+                  </Link>
+                )
+              })}
+
+              <button
+                id="menu-btn"
+                className="xl:hidden block cursor-pointer"
+                aria-label="Toggle menu"
+                onClick={() => setIsOpen(true)}
+              >
+                <Image
+                  src="/images/menu-btn.svg"
+                  alt="Menu button"
+                  role="img"
+                  width={50}
+                  height={50}
+                  className="w-40 h-40"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+    </>
   )
 }

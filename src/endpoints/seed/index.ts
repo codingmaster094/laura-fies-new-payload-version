@@ -49,8 +49,13 @@ export const seed = async ({
       payload.updateGlobal({
         slug: global,
         data: {
-          navItems: [],
-        },
+          // use the field name that exists in your Header global
+          menus: [],
+
+          // keep other header fields so they don't get removed
+          Header_Logo: null,
+          Mobile_Header_Logo: null,
+        } as any, // cast to any to avoid TypeScript seed typing issues
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -217,60 +222,56 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding globals...`)
 
+  // --- Replace this block in your seed file ---
   await Promise.all([
     payload.updateGlobal({
       slug: 'header',
       data: {
-        navItems: [
+        menus: [
           {
             link: {
-              type: 'custom',
               label: 'Posts',
               url: '/posts',
+              target: '_self',
             },
           },
           {
             link: {
-              type: 'reference',
               label: 'Contact',
-              reference: {
-                relationTo: 'pages',
-                value: contactPage.id,
-              },
+              url: '/contact',
+              target: '_self',
             },
           },
         ],
-      },
+      } as any,
     }),
     payload.updateGlobal({
       slug: 'footer',
       data: {
-        navItems: [
+        menus: [
           {
             link: {
-              type: 'custom',
               label: 'Admin',
               url: '/admin',
+              target: '_self',
             },
           },
           {
             link: {
-              type: 'custom',
               label: 'Source Code',
-              newTab: true,
               url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
+              target: '_blank',
             },
           },
           {
             link: {
-              type: 'custom',
               label: 'Payload',
-              newTab: true,
               url: 'https://payloadcms.com/',
+              target: '_blank',
             },
           },
         ],
-      },
+      } as any,
     }),
   ])
 
