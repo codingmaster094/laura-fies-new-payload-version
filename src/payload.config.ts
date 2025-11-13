@@ -60,7 +60,9 @@ export default buildConfig({
   // This config helps us configure global or default features that the other editors can inherit
   editor: defaultLexical,
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url:
+      process.env.DATABASE_URI ||
+      'mongodb+srv://gawaledipak109_db_user:ppClfkQu0uvfhmjS@cluster0.iiu7ydb.mongodb.net/payload-practice?appName=Cluster0',
   }),
   collections: [Pages, Posts, Media, Categories, Users],
   cors: [getServerSideURL()].filter(Boolean),
