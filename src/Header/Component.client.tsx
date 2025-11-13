@@ -2,7 +2,7 @@
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, { useEffect, useRef, useState } from 'react'
+import React, {  useRef, useState } from 'react'
 import type { Header } from '@/payload-types'
 import { Logo } from '@/components/Logo/Logo'
 import Lenis from '@studio-freight/lenis'
@@ -45,20 +45,11 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
-  const [theme, setTheme] = useState<string | null>(null)
-  const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
-  const [isOpen, setIsOpen] = useState(false)
-
-  // Lenis ref typed
-  // types for refs earlier
   const lenisRef = useRef<Lenis | null>(null)
 
-  // typed handler
   const handleSmoothScroll = (e: React.MouseEvent, targetId?: string) => {
     if (!targetId) return
-    // if not an anchor (like '#section') don't try smooth scroll
     if (!targetId.startsWith('#')) return
 
     e.preventDefault()
@@ -66,28 +57,22 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     const el = document.querySelector(targetId)
 
     if (el && lenisRef.current) {
-      // ensure el is an HTMLElement before passing to Lenis
       if (el instanceof HTMLElement) {
         lenisRef.current.scrollTo(el, {
           offset: -80,
           duration: 1.2,
         })
       } else {
-        // fallback: pass the selector string to Lenis or use native scrolling
-        // Lenis.scrollTo accepts a selector string as well
         lenisRef.current.scrollTo(targetId, {
           offset: -80,
           duration: 1.2,
         })
       }
     } else if (el) {
-      // if Lenis not available, fallback to native
       if (el instanceof HTMLElement) {
         el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
     }
-
-    setIsOpen(false)
   }
 
   // safe accessors / defaults
@@ -202,7 +187,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 id="menu-btn"
                 className="xl:hidden block cursor-pointer"
                 aria-label="Toggle menu"
-                onClick={() => setIsOpen(true)}
               >
                 <Image
                   src="/images/menu-btn.svg"
