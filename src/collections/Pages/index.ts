@@ -8,6 +8,7 @@ import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
 import { hero } from '@/heros/config'
 import { Personalvermittlung } from '@/blocks/Personalvermittlung/config'
+import { Unternehmen } from '@/blocks/Unternehmen/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
 import { generatePreviewPath } from '../../utilities/generatePreviewPath'
@@ -69,7 +70,15 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock , Personalvermittlung],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                Personalvermittlung,
+                Unternehmen,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

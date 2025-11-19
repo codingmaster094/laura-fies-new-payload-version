@@ -201,7 +201,15 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock | PersonalvermittlungBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | PersonalvermittlungBlock
+    | UnternehmenBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -832,6 +840,83 @@ export interface PersonalvermittlungBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UnternehmenBlock".
+ */
+export interface UnternehmenBlock {
+  link_title?:
+    | {
+        sub_title?:
+          | {
+              links?:
+                | {
+                    slider?:
+                      | {
+                          'Slider Item'?:
+                            | {
+                                sliderImage?: (string | null) | Media;
+                                Heading?: string | null;
+                                richText?: {
+                                  root: {
+                                    type: string;
+                                    children: {
+                                      type: any;
+                                      version: number;
+                                      [k: string]: unknown;
+                                    }[];
+                                    direction: ('ltr' | 'rtl') | null;
+                                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                                    indent: number;
+                                    version: number;
+                                  };
+                                  [k: string]: unknown;
+                                } | null;
+                                id?: string | null;
+                              }[]
+                            | null;
+                          'CTA Item'?:
+                            | {
+                                CTAHeading?: string | null;
+                                richText?: {
+                                  root: {
+                                    type: string;
+                                    children: {
+                                      type: any;
+                                      version: number;
+                                      [k: string]: unknown;
+                                    }[];
+                                    direction: ('ltr' | 'rtl') | null;
+                                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                                    indent: number;
+                                    version: number;
+                                  };
+                                  [k: string]: unknown;
+                                } | null;
+                                CTA_link?: {
+                                  label?: string | null;
+                                  url?: string | null;
+                                  target?: ('_self' | '_blank') | null;
+                                };
+                                id?: string | null;
+                              }[]
+                            | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'unternehmen';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1141,6 +1226,7 @@ export interface PagesSelect<T extends boolean = true> {
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         personalvermittlung?: T | PersonalvermittlungBlockSelect<T>;
+        unternehmen?: T | UnternehmenBlockSelect<T>;
       };
   meta?:
     | T
@@ -1260,6 +1346,56 @@ export interface PersonalvermittlungBlockSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "UnternehmenBlock_select".
+ */
+export interface UnternehmenBlockSelect<T extends boolean = true> {
+  link_title?:
+    | T
+    | {
+        sub_title?:
+          | T
+          | {
+              links?:
+                | T
+                | {
+                    slider?:
+                      | T
+                      | {
+                          'Slider Item'?:
+                            | T
+                            | {
+                                sliderImage?: T;
+                                Heading?: T;
+                                richText?: T;
+                                id?: T;
+                              };
+                          'CTA Item'?:
+                            | T
+                            | {
+                                CTAHeading?: T;
+                                richText?: T;
+                                CTA_link?:
+                                  | T
+                                  | {
+                                      label?: T;
+                                      url?: T;
+                                      target?: T;
+                                    };
+                                id?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
             };
         id?: T;
       };

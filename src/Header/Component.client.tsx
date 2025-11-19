@@ -1,12 +1,12 @@
 'use client'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import React, {  useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { Header } from '@/payload-types'
 import { Logo } from '@/components/Logo/Logo'
 import Lenis from '@studio-freight/lenis'
 import Image from 'next/image'
+import OffCanvas from '../components/OffCanvas'
 
 /* small helper types for local use (optional — Header from payload-types is authoritative) */
 type Media = {
@@ -45,34 +45,71 @@ interface HeaderClientProps {
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
+  const [isOpen, setIsOpen] = useState(false)
   const pathname = usePathname()
+  // IMPORTANT: explicitly type the ref so TS knows it's a Lenis instance (or null)
   const lenisRef = useRef<Lenis | null>(null)
 
-  const handleSmoothScroll = (e: React.MouseEvent, targetId?: string) => {
-    if (!targetId) return
-    if (!targetId.startsWith('#')) return
+  useEffect(() => {
+    // create Lenis instance (omit unsupported option 'smoothTouch')
+    const scroller = new Lenis({
+      duration: 1.2, // speed of scroll
+      easing: (t: number) => 1 - Math.pow(1 - t, 3),
+      smoothWheel: true,
+      // removed smoothTouch because the installed Lenis type doesn't include it
+    })
+
+    // RAF loop: typed time and store id so we can cancel on cleanup
+    let rafId = 0
+    const loop = (time: number) => {
+      scroller.raf(time)
+      rafId = requestAnimationFrame(loop)
+    }
+    rafId = requestAnimationFrame(loop)
+
+    lenisRef.current = scroller
+
+    return () => {
+      cancelAnimationFrame(rafId)
+      scroller.destroy()
+      lenisRef.current = null
+    }
+  }, [])
+
+  // typed event and targetId
+  const handleSmoothScroll = (e: React.MouseEvent, targetId: string) => {
+    if (!targetId.startsWith('#')) {
+      // Non-anchor — allow normal navigation
+      return
+    }
 
     e.preventDefault()
+    const targetEl = document.querySelector(targetId)
 
-    const el = document.querySelector(targetId)
-
-    if (el && lenisRef.current) {
-      if (el instanceof HTMLElement) {
-        lenisRef.current.scrollTo(el, {
-          offset: -80,
-          duration: 1.2,
-        })
-      } else {
-        lenisRef.current.scrollTo(targetId, {
-          offset: -80,
-          duration: 1.2,
-        })
+    if (!lenisRef.current) {
+      // fallback: no Lenis instance — scroll normally
+      if (targetEl instanceof HTMLElement) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
-    } else if (el) {
-      if (el instanceof HTMLElement) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      }
+      setIsOpen(false)
+      return
     }
+
+    // If querySelector finds an HTMLElement, pass it. Otherwise pass the selector string.
+    if (targetEl instanceof HTMLElement) {
+      lenisRef.current.scrollTo(targetEl, {
+        offset: -80,
+        duration: 1.2,
+      })
+    } else {
+      // Lenis accepts selector string too — safe fallback
+      lenisRef.current.scrollTo(targetId, {
+        offset: -80,
+        duration: 1.2,
+      })
+    }
+
+    setIsOpen(false)
   }
 
   // safe accessors / defaults
@@ -107,7 +144,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                         {isAnchor ? (
                           <a
                             href={menuUrl}
-                            onClick={(e) => handleSmoothScroll(e as React.MouseEvent, menuUrl)}
+                            onClick={(e) => handleSmoothScroll(e, menuUrl)}
                             className={`${isActive ? 'active' : 'text-primary'} transition-all duration-200`}
                           >
                             {menu?.link?.label ?? ''}
@@ -187,6 +224,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 id="menu-btn"
                 className="xl:hidden block cursor-pointer"
                 aria-label="Toggle menu"
+                onClick={() => setIsOpen((v) => !v)}
               >
                 <Image
                   src="/images/menu-btn.svg"
@@ -201,6 +239,13 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           </div>
         </div>
       </header>
+
+      <OffCanvas
+        logo={data?.Header_Logo}
+        menus={menus}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </>
   )
 }
