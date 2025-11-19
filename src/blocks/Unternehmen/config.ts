@@ -1,157 +1,184 @@
 import type { Block } from 'payload'
 
-import {
-  EXPERIMENTAL_TableFeature,
-  FixedToolbarFeature,
-  HeadingFeature,
-  InlineToolbarFeature,
-  lexicalEditor,
-} from '@payloadcms/richtext-lexical'
-
 export const Unternehmen: Block = {
   slug: 'unternehmen',
   interfaceName: 'UnternehmenBlock',
   fields: [
     {
-      name: 'link_title',
-      label: { en: 'link-title', de: '' },
-      type: 'array',
+      name: 'sectionTitle',
+      type: 'text',
+      label: {
+        en: 'Section Title',
+        de: 'Abschnitts-Titel',
+      },
+      required: true,
+    },
+    {
+      name: 'introText',
+      type: 'textarea',
+      label: {
+        en: 'Intro / Subtitle',
+        de: 'Einleitung / Untertitel',
+      },
+      admin: {
+        description: 'Short descriptive text below the section title.',
+      },
+    },
+
+    // CTA area (centered button in screenshot)
+    {
+      name: 'cta',
+      type: 'group',
+      label: { en: 'Call to action', de: 'Call-to-Action' },
       fields: [
         {
-          name: 'sub_title',
-          label: { en: 'Submenus', de: 'Untermenu' },
-          type: 'array',
+          name: 'text',
+          type: 'text',
+          label: { en: 'CTA text', de: 'CTA Text' },
+        },
+        {
+          name: 'link',
+          type: 'text',
+          label: { en: 'CTA link (internal or external)', de: 'CTA Link' },
+        },
+        {
+          name: 'show',
+          type: 'checkbox',
+          label: { en: 'Show CTA', de: 'CTA anzeigen' },
+        },
+      ],
+    },
+
+    // Top carousel / card row (matches your top row)
+    {
+      name: 'cardsGroupTop',
+      label: { en: 'Top Cards (carousel/row)', de: 'Obere Karten (Reihe)' },
+      type: 'array',
+      minRows: 0,
+      maxRows: 12,
+      fields: [
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          label: { en: 'Icon / Image', de: 'Icon / Bild' },
+          admin: {
+            description: 'Small icon shown in card corner',
+          },
+        },
+        {
+          name: 'title',
+          type: 'text',
+          label: { en: 'Card Title', de: 'Karten-Titel' },
+          required: true,
+        },
+        {
+          name: 'description',
+          type: 'richText',
+          label: { en: 'Description', de: 'Beschreibung' },
+          admin: {
+            description: 'Longer description shown inside the card',
+            // If you want to use a custom lexical editor implementation
+            // you can configure admin components here. Example placeholder:
+            // components: { Field: lexicalEditor(...) }
+            // (Make sure the lexicalEditor API matches your import)
+          },
+        },
+        {
+          name: 'badgeNumber',
+          type: 'number',
+          label: { en: 'Badge Number', de: 'Badge Nummer' },
+          admin: { description: 'Small numeric badge in card' },
+        },
+        {
+          name: 'link',
+          type: 'group',
+          label: { en: 'Card Link (optional)', de: 'Karten-Link (optional)' },
           fields: [
-            {
-              name: 'links',
-              label: { en: 'Submenu Links', de: 'Untermenu Links' },
-              type: 'array',
-              fields: [
-                {
-                  name: 'slider',
-                  label: { en: 'Choise slider & CTA', de: '' },
-                  type: 'array',
-                  fields: [
-                    {
-                      name: 'Slider Item',
-                      label: { en: 'slider', de: '' },
-                      type: 'array',
-                      fields: [
-                        {
-                          name: 'sliderImage',
-                          type: 'upload',
-                          label: {
-                            en: 'Slider Image',
-                            de: 'Slider Bild',
-                          },
-                          relationTo: 'media',
-                          required: false,
-                        },
-                        {
-                          name: 'Heading',
-                          type: 'text',
-                          label: {
-                            en: 'Heading',
-                            de: 'Überschrift',
-                          },
-                        },
-                        {
-                          name: 'richText',
-                          type: 'richText',
-                          label: {
-                            en: 'Rich Text',
-                            de: 'Rich Text',
-                          },
-                          editor: lexicalEditor({
-                            features: ({ defaultFeatures }) => [
-                              ...defaultFeatures,
-                              HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                              FixedToolbarFeature(),
-                              InlineToolbarFeature(),
-                              EXPERIMENTAL_TableFeature(),
-                            ],
-                          }),
-                        },
-                      ],
-                    },
-                    {
-                      name: 'CTA Item',
-                      label: { en: 'CTA', de: '' },
-                      type: 'array',
-                      fields: [
-                        {
-                          name: 'CTAHeading',
-                          type: 'text',
-                          label: {
-                            en: 'CTA Heading',
-                            de: '',
-                          },
-                        },
-                        {
-                          name: 'richText',
-                          type: 'richText',
-                          label: {
-                            en: 'Rich Text',
-                            de: 'Rich Text',
-                          },
-                          editor: lexicalEditor({
-                            features: ({ defaultFeatures }) => [
-                              ...defaultFeatures,
-                              HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                              FixedToolbarFeature(),
-                              InlineToolbarFeature(),
-                              EXPERIMENTAL_TableFeature(),
-                            ],
-                          }),
-                        },
-                        {
-                          name: 'CTA_link',
-                          type: 'group',
-                          label: {
-                            en: 'CTA Link',
-                            de: '',
-                          },
-                          fields: [
-                            {
-                              name: 'label',
-                              type: 'text',
-                              label: {
-                                en: 'CTA Label',
-                                de: '',
-                              },
-                            },
-                            {
-                              name: 'url',
-                              type: 'text',
-                              label: {
-                                en: 'URL',
-                                de: 'URL',
-                              },
-                            },
-                            {
-                              name: 'target',
-                              type: 'select',
-                              label: {
-                                en: 'Target',
-                                de: 'Ziel',
-                              },
-                              options: [
-                                { label: { en: 'Same Tab', de: 'Gleiches Tab' }, value: '_self' },
-                                { label: { en: 'New Tab', de: 'Neues Tab' }, value: '_blank' },
-                              ],
-                              defaultValue: '_self',
-                            },
-                          ],
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
+            { name: 'label', type: 'text', label: { en: 'Label', de: 'Bezeichnung' } },
+            { name: 'url', type: 'text', label: { en: 'URL', de: 'URL' } },
+          ],
+        },
+        {
+          name: 'accentBox',
+          type: 'checkbox',
+          label: { en: 'Show accent box / number card', de: 'Akzentbox anzeigen' },
+        },
+      ],
+    },
+
+    // Bottom carousel / card row (matches the lower row)
+    {
+      name: 'cardsGroupBottom',
+      label: { en: 'Bottom Cards (carousel/row)', de: 'Untere Karten (Reihe)' },
+      type: 'array',
+      minRows: 0,
+      maxRows: 12,
+      fields: [
+        {
+          name: 'icon',
+          type: 'upload',
+          relationTo: 'media',
+          label: { en: 'Icon / Image', de: 'Icon / Bild' },
+        },
+        {
+          name: 'title',
+          type: 'text',
+          label: { en: 'Card Title', de: 'Karten-Titel' },
+        },
+        {
+          name: 'description',
+          type: 'richText',
+          label: { en: 'Description', de: 'Beschreibung' },
+        },
+        {
+          name: 'badgeNumber',
+          type: 'number',
+          label: { en: 'Badge Number', de: 'Badge Nummer' },
+        },
+        {
+          name: 'link',
+          type: 'group',
+          label: { en: 'Card Link (optional)', de: 'Karten-Link (optional)' },
+          fields: [
+            { name: 'label', type: 'text', label: { en: 'Label', de: 'Bezeichnung' } },
+            { name: 'url', type: 'text', label: { en: 'URL', de: 'URL' } },
           ],
         },
       ],
+    },
+
+    // Optional controls for arrows/pagination and layout choices
+    {
+      name: 'showNavigationArrows',
+      type: 'checkbox',
+      label: { en: 'Show navigation arrows', de: 'Navigations-Pfeile anzeigen' },
+      defaultValue: true,
+    },
+    {
+      name: 'cardsPerView',
+      type: 'select',
+      label: { en: 'Cards visible per view', de: 'Karten pro Ansicht' },
+      options: [
+        { label: '1', value: '1' },
+        { label: '2', value: '2' },
+        { label: '3', value: '3' },
+        { label: '4', value: '4' },
+      ],
+      defaultValue: '3',
+    },
+
+    // Small visual settings (optional)
+    {
+      name: 'background',
+      type: 'select',
+      label: { en: 'Background style', de: 'Hintergrundstil' },
+      options: [
+        { label: 'White', value: 'white' },
+        { label: 'Dark', value: 'dark' },
+        { label: 'Muted', value: 'muted' },
+      ],
+      defaultValue: 'white',
     },
   ],
   labels: {
@@ -159,3 +186,5 @@ export const Unternehmen: Block = {
     singular: 'Unternehmen',
   },
 }
+
+export default Unternehmen
