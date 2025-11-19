@@ -6,6 +6,7 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import PersonalvermittlungBlock from '@/blocks/Personalvermittlung/Component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
@@ -13,6 +14,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  personalvermittlung: PersonalvermittlungBlock,
 }
 
 export const RenderBlocks: React.FC<{
