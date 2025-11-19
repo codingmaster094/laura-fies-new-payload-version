@@ -785,6 +785,8 @@ export interface Form {
  * via the `definition` "PersonalvermittlungBlock".
  */
 export interface PersonalvermittlungBlock {
+  heading?: string | null;
+  aboutImage?: (string | null) | Media;
   richText?: {
     root: {
       type: string;
@@ -1243,6 +1245,8 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "PersonalvermittlungBlock_select".
  */
 export interface PersonalvermittlungBlockSelect<T extends boolean = true> {
+  heading?: T;
+  aboutImage?: T;
   richText?: T;
   links?:
     | T

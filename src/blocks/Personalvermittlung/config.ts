@@ -14,6 +14,19 @@ export const Personalvermittlung: Block = {
   interfaceName: 'PersonalvermittlungBlock',
   fields: [
     {
+      name: 'heading',
+      label: 'Heading',
+      type: 'text',
+      required: false,
+    },
+    {
+      name: 'aboutImage',
+      label: 'Personalvermittlung Image',
+      type: 'upload',
+      relationTo: 'media',
+      required: false,
+    },
+    {
       name: 'richText',
       type: 'richText',
       editor: lexicalEditor({
