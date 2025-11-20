@@ -133,7 +133,7 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
         </div>
 
         {/* ===== ACTIVE MAIN TAB CONTENT ===== */}
-        {sections.map((main, mainIdx) =>
+        {/* {sections.map((main, mainIdx) =>
           mainIdx === mainTab ? (
             <div key={mainIdx} className="space-y-96">
               <div className="space-y-64">
@@ -146,7 +146,7 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
                   // return
                   return (
                     <div key={linkIdx} className="space-y-48">
-                      {/* slider Heading */}
+                  
                       {sliderItems.length > 0 && sliderItems.heading != undefined && (
                         <h3 className="text-h3 font-medium text-center px-16">
                           {sliderItems.heading}
@@ -324,7 +324,7 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
               </div>
             </div>
           ) : null,
-        )}
+        )} */}
       </div>
     </section>
   )
