@@ -894,7 +894,7 @@ export interface UnternehmenBlock {
                     id?: string | null;
                   }[]
                 | null;
-              'CTA Item'?:
+              CTAItem?:
                 | {
                     CTAHeading?: string | null;
                     richText?: {
@@ -1394,7 +1394,7 @@ export interface UnternehmenBlockSelect<T extends boolean = true> {
                         };
                     id?: T;
                   };
-              'CTA Item'?:
+              CTAItem?:
                 | T
                 | {
                     CTAHeading?: T;

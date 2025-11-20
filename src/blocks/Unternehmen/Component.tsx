@@ -132,7 +132,6 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
           ))}
         </div>
 
-{ console.log('sections', sections)}
         {/* ===== ACTIVE MAIN TAB CONTENT ===== */}
         {sections.map((main, mainIdx) =>
           mainIdx === mainTab ? (
