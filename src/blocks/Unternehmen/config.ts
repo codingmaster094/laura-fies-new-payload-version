@@ -31,44 +31,75 @@ export const Unternehmen: Block = {
           type: 'array',
           fields: [
             {
-              name: 'Slider Item',
-              label: { en: 'slider', de: '' },
+              name: 'slides',
+              label: { en: 'Slides', de: 'Slides' },
               type: 'array',
+              minRows: 1,
               fields: [
                 {
-                  name: 'sliderImage',
-                  type: 'upload',
-                  label: {
-                    en: 'Slider Image',
-                    de: 'Slider Bild',
-                  },
-                  relationTo: 'media',
-                  required: false,
-                },
-                {
-                  name: 'Heading',
+                  name: 'heading',
                   type: 'text',
-                  label: {
-                    en: 'Heading',
-                    de: 'Überschrift',
-                  },
+                  label: { en: 'Heading', de: 'Überschrift' },
+                  required: true,
                 },
                 {
-                  name: 'richText',
+                  name: 'description',
                   type: 'richText',
-                  label: {
-                    en: 'Rich Text',
-                    de: 'Rich Text',
+                  label: { en: 'Description', de: 'Beschreibung' },
+                  admin: {
+                    description: 'Short paragraph / rich text',
                   },
                   editor: lexicalEditor({
                     features: ({ defaultFeatures }) => [
                       ...defaultFeatures,
-                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                      HeadingFeature({ enabledHeadingSizes: ['h2', 'h3'] }),
                       FixedToolbarFeature(),
                       InlineToolbarFeature(),
                       EXPERIMENTAL_TableFeature(),
                     ],
                   }),
+                },
+                {
+                  name: 'Slider Item',
+                  label: { en: 'slider', de: '' },
+                  type: 'array',
+                  fields: [
+                    {
+                      name: 'sliderImage',
+                      type: 'upload',
+                      label: {
+                        en: 'Slider Image',
+                        de: 'Slider Bild',
+                      },
+                      relationTo: 'media',
+                      required: false,
+                    },
+                    {
+                      name: 'Heading',
+                      type: 'text',
+                      label: {
+                        en: 'Heading',
+                        de: 'Überschrift',
+                      },
+                    },
+                    {
+                      name: 'richText',
+                      type: 'richText',
+                      label: {
+                        en: 'Rich Text',
+                        de: 'Rich Text',
+                      },
+                      editor: lexicalEditor({
+                        features: ({ defaultFeatures }) => [
+                          ...defaultFeatures,
+                          HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                          FixedToolbarFeature(),
+                          InlineToolbarFeature(),
+                          EXPERIMENTAL_TableFeature(),
+                        ],
+                      }),
+                    },
+                  ],
                 },
               ],
             },
