@@ -133,20 +133,16 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
         </div>
 
         {/* ===== ACTIVE MAIN TAB CONTENT ===== */}
-        {/* {sections.map((main, mainIdx) =>
+        {sections.map((main, mainIdx) =>
           mainIdx === mainTab ? (
             <div key={mainIdx} className="space-y-96">
               <div className="space-y-64">
-                {main.choise_slider_cta?.map((linkItem, linkIdx) => {
-                  // console.log('linkItem', linkItem.slides)
+                {/* {main.choise_slider_cta?.map((linkItem, linkIdx) => {
                   const sliderItems = linkItem.slides?.[0] || []
 
                   const ctaItems = linkItem?.slider?.[0]?.['CTA Item'] || []
-                  console.log('sliderItems', sliderItems)
-                  // return
                   return (
                     <div key={linkIdx} className="space-y-48">
-                  
                       {sliderItems.length > 0 && sliderItems.heading != undefined && (
                         <h3 className="text-h3 font-medium text-center px-16">
                           {sliderItems.heading}
@@ -260,7 +256,6 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
                             )
                           })}
                       </Swiper>
-                      {/* Container for CTAs */}
                       <div className="container">
                         {ctaItems.length > 0 && (
                           <div className="p-32 my-64 space-y-24 text-center">
@@ -320,11 +315,11 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
                       </div>
                     </div>
                   )
-                })}
+                })} */}
               </div>
             </div>
           ) : null,
-        )} */}
+        )}
       </div>
     </section>
   )
