@@ -843,83 +843,75 @@ export interface PersonalvermittlungBlock {
  * via the `definition` "UnternehmenBlock".
  */
 export interface UnternehmenBlock {
-  sectionTitle: string;
-  /**
-   * Short descriptive text below the section title.
-   */
-  introText?: string | null;
-  cta?: {
-    text?: string | null;
-    link?: string | null;
-    show?: boolean | null;
-  };
-  cardsGroupTop?:
+  MainSection?:
     | {
-        /**
-         * Small icon shown in card corner
-         */
-        icon?: (string | null) | Media;
-        title: string;
-        /**
-         * Longer description shown inside the card
-         */
-        description?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        /**
-         * Small numeric badge in card
-         */
-        badgeNumber?: number | null;
-        link?: {
-          label?: string | null;
-          url?: string | null;
-        };
-        accentBox?: boolean | null;
+        Heading?: string | null;
+        subSection?:
+          | {
+              Data?:
+                | {
+                    slider?:
+                      | {
+                          'Slider Item'?:
+                            | {
+                                sliderImage?: (string | null) | Media;
+                                Heading?: string | null;
+                                richText?: {
+                                  root: {
+                                    type: string;
+                                    children: {
+                                      type: any;
+                                      version: number;
+                                      [k: string]: unknown;
+                                    }[];
+                                    direction: ('ltr' | 'rtl') | null;
+                                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                                    indent: number;
+                                    version: number;
+                                  };
+                                  [k: string]: unknown;
+                                } | null;
+                                id?: string | null;
+                              }[]
+                            | null;
+                          'CTA Item'?:
+                            | {
+                                CTAHeading?: string | null;
+                                richText?: {
+                                  root: {
+                                    type: string;
+                                    children: {
+                                      type: any;
+                                      version: number;
+                                      [k: string]: unknown;
+                                    }[];
+                                    direction: ('ltr' | 'rtl') | null;
+                                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                                    indent: number;
+                                    version: number;
+                                  };
+                                  [k: string]: unknown;
+                                } | null;
+                                CTA_link?: {
+                                  label?: string | null;
+                                  url?: string | null;
+                                  target?: ('_self' | '_blank') | null;
+                                };
+                                id?: string | null;
+                              }[]
+                            | null;
+                          id?: string | null;
+                        }[]
+                      | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              id?: string | null;
+            }[]
+          | null;
         id?: string | null;
       }[]
     | null;
-  cardsGroupBottom?:
-    | {
-        icon?: (string | null) | Media;
-        title?: string | null;
-        description?: {
-          root: {
-            type: string;
-            children: {
-              type: any;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        badgeNumber?: number | null;
-        link?: {
-          label?: string | null;
-          url?: string | null;
-        };
-        id?: string | null;
-      }[]
-    | null;
-  showNavigationArrows?: boolean | null;
-  cardsPerView?: ('1' | '2' | '3' | '4') | null;
-  background?: ('white' | 'dark' | 'muted') | null;
   id?: string | null;
   blockName?: string | null;
   blockType: 'unternehmen';
@@ -1366,49 +1358,49 @@ export interface PersonalvermittlungBlockSelect<T extends boolean = true> {
  * via the `definition` "UnternehmenBlock_select".
  */
 export interface UnternehmenBlockSelect<T extends boolean = true> {
-  sectionTitle?: T;
-  introText?: T;
-  cta?:
+  MainSection?:
     | T
     | {
-        text?: T;
-        link?: T;
-        show?: T;
-      };
-  cardsGroupTop?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        badgeNumber?: T;
-        link?:
+        Heading?: T;
+        subSection?:
           | T
           | {
-              label?: T;
-              url?: T;
+              Data?:
+                | T
+                | {
+                    slider?:
+                      | T
+                      | {
+                          'Slider Item'?:
+                            | T
+                            | {
+                                sliderImage?: T;
+                                Heading?: T;
+                                richText?: T;
+                                id?: T;
+                              };
+                          'CTA Item'?:
+                            | T
+                            | {
+                                CTAHeading?: T;
+                                richText?: T;
+                                CTA_link?:
+                                  | T
+                                  | {
+                                      label?: T;
+                                      url?: T;
+                                      target?: T;
+                                    };
+                                id?: T;
+                              };
+                          id?: T;
+                        };
+                    id?: T;
+                  };
+              id?: T;
             };
-        accentBox?: T;
         id?: T;
       };
-  cardsGroupBottom?:
-    | T
-    | {
-        icon?: T;
-        title?: T;
-        description?: T;
-        badgeNumber?: T;
-        link?:
-          | T
-          | {
-              label?: T;
-              url?: T;
-            };
-        id?: T;
-      };
-  showNavigationArrows?: T;
-  cardsPerView?: T;
-  background?: T;
   id?: T;
   blockName?: T;
 }
