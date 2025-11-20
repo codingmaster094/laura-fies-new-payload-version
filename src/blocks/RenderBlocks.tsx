@@ -7,6 +7,7 @@ import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import PersonalvermittlungBlock from '@/blocks/Personalvermittlung/Component'
+import UnternehmenBlock from '@/blocks/Unternehmen/Component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
@@ -15,13 +16,13 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
   personalvermittlung: PersonalvermittlungBlock,
+  unternehmen: UnternehmenBlock,
 }
 
 export const RenderBlocks: React.FC<{
   blocks: Page['layout'][0][]
 }> = (props) => {
   const { blocks } = props
-
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
   if (hasBlocks) {

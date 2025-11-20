@@ -104,7 +104,7 @@ export const Unternehmen: Block = {
               ],
             },
             {
-              name: 'CTA Item',
+              name: 'CTAItem',
               label: { en: 'CTA', de: '' },
               type: 'array',
               fields: [

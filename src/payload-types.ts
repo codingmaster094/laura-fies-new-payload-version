@@ -846,13 +846,15 @@ export interface UnternehmenBlock {
   MainSection?:
     | {
         Heading?: string | null;
-        choise_slider?:
+        choise_slider_cta?:
           | {
-              'Slider Item'?:
+              slides?:
                 | {
-                    sliderImage?: (string | null) | Media;
-                    Heading?: string | null;
-                    richText?: {
+                    heading: string;
+                    /**
+                     * Short paragraph / rich text
+                     */
+                    description?: {
                       root: {
                         type: string;
                         children: {
@@ -867,6 +869,28 @@ export interface UnternehmenBlock {
                       };
                       [k: string]: unknown;
                     } | null;
+                    SliderItem?:
+                      | {
+                          sliderImage?: (string | null) | Media;
+                          Heading?: string | null;
+                          richText?: {
+                            root: {
+                              type: string;
+                              children: {
+                                type: any;
+                                version: number;
+                                [k: string]: unknown;
+                              }[];
+                              direction: ('ltr' | 'rtl') | null;
+                              format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                              indent: number;
+                              version: number;
+                            };
+                            [k: string]: unknown;
+                          } | null;
+                          id?: string | null;
+                        }[]
+                      | null;
                     id?: string | null;
                   }[]
                 | null;
@@ -1352,15 +1376,22 @@ export interface UnternehmenBlockSelect<T extends boolean = true> {
     | T
     | {
         Heading?: T;
-        choise_slider?:
+        choise_slider_cta?:
           | T
           | {
-              'Slider Item'?:
+              slides?:
                 | T
                 | {
-                    sliderImage?: T;
-                    Heading?: T;
-                    richText?: T;
+                    heading?: T;
+                    description?: T;
+                    SliderItem?:
+                      | T
+                      | {
+                          sliderImage?: T;
+                          Heading?: T;
+                          richText?: T;
+                          id?: T;
+                        };
                     id?: T;
                   };
               'CTA Item'?:
