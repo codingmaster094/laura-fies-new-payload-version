@@ -60,8 +60,8 @@ export const Unternehmen: Block = {
                   }),
                 },
                 {
-                  name: 'Slider Item',
-                  label: { en: 'slider', de: '' },
+                  name: 'SliderItem',
+                  label: { en: 'slider Item', de: 'Schieberegler Element' },
                   type: 'array',
                   fields: [
                     {
