@@ -26,132 +26,118 @@ export const Unternehmen: Block = {
           },
         },
         {
-          name: 'subSection',
-          label: { en: 'Sub Section', de: 'Unterabschnitt' },
+          name: 'choise_slider_cta',
+          label: { en: 'Choise slider & CTA', de: 'Auswahl-Schieberegler & CTA' },
           type: 'array',
           fields: [
             {
-              name: 'Data',
-              label: { en: 'Submenu Links', de: 'Untermenu Links' },
+              name: 'Slider Item',
+              label: { en: 'slider', de: '' },
               type: 'array',
               fields: [
                 {
-                  name: 'slider',
-                  label: { en: 'Choise slider & CTA', de: '' },
-                  type: 'array',
+                  name: 'sliderImage',
+                  type: 'upload',
+                  label: {
+                    en: 'Slider Image',
+                    de: 'Slider Bild',
+                  },
+                  relationTo: 'media',
+                  required: false,
+                },
+                {
+                  name: 'Heading',
+                  type: 'text',
+                  label: {
+                    en: 'Heading',
+                    de: 'Überschrift',
+                  },
+                },
+                {
+                  name: 'richText',
+                  type: 'richText',
+                  label: {
+                    en: 'Rich Text',
+                    de: 'Rich Text',
+                  },
+                  editor: lexicalEditor({
+                    features: ({ defaultFeatures }) => [
+                      ...defaultFeatures,
+                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                      FixedToolbarFeature(),
+                      InlineToolbarFeature(),
+                      EXPERIMENTAL_TableFeature(),
+                    ],
+                  }),
+                },
+              ],
+            },
+            {
+              name: 'CTA Item',
+              label: { en: 'CTA', de: '' },
+              type: 'array',
+              fields: [
+                {
+                  name: 'CTAHeading',
+                  type: 'text',
+                  label: {
+                    en: 'CTA Heading',
+                    de: '',
+                  },
+                },
+                {
+                  name: 'richText',
+                  type: 'richText',
+                  label: {
+                    en: 'Rich Text',
+                    de: 'Rich Text',
+                  },
+                  editor: lexicalEditor({
+                    features: ({ defaultFeatures }) => [
+                      ...defaultFeatures,
+                      HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
+                      FixedToolbarFeature(),
+                      InlineToolbarFeature(),
+                      EXPERIMENTAL_TableFeature(),
+                    ],
+                  }),
+                },
+                {
+                  name: 'CTA_link',
+                  type: 'group',
+                  label: {
+                    en: 'CTA Link',
+                    de: '',
+                  },
                   fields: [
                     {
-                      name: 'Slider Item',
-                      label: { en: 'slider', de: '' },
-                      type: 'array',
-                      fields: [
-                        {
-                          name: 'sliderImage',
-                          type: 'upload',
-                          label: {
-                            en: 'Slider Image',
-                            de: 'Slider Bild',
-                          },
-                          relationTo: 'media',
-                          required: false,
-                        },
-                        {
-                          name: 'Heading',
-                          type: 'text',
-                          label: {
-                            en: 'Heading',
-                            de: 'Überschrift',
-                          },
-                        },
-                        {
-                          name: 'richText',
-                          type: 'richText',
-                          label: {
-                            en: 'Rich Text',
-                            de: 'Rich Text',
-                          },
-                          editor: lexicalEditor({
-                            features: ({ defaultFeatures }) => [
-                              ...defaultFeatures,
-                              HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                              FixedToolbarFeature(),
-                              InlineToolbarFeature(),
-                              EXPERIMENTAL_TableFeature(),
-                            ],
-                          }),
-                        },
-                      ],
+                      name: 'label',
+                      type: 'text',
+                      label: {
+                        en: 'CTA Label',
+                        de: '',
+                      },
                     },
                     {
-                      name: 'CTA Item',
-                      label: { en: 'CTA', de: '' },
-                      type: 'array',
-                      fields: [
-                        {
-                          name: 'CTAHeading',
-                          type: 'text',
-                          label: {
-                            en: 'CTA Heading',
-                            de: '',
-                          },
-                        },
-                        {
-                          name: 'richText',
-                          type: 'richText',
-                          label: {
-                            en: 'Rich Text',
-                            de: 'Rich Text',
-                          },
-                          editor: lexicalEditor({
-                            features: ({ defaultFeatures }) => [
-                              ...defaultFeatures,
-                              HeadingFeature({ enabledHeadingSizes: ['h1', 'h2', 'h3', 'h4'] }),
-                              FixedToolbarFeature(),
-                              InlineToolbarFeature(),
-                              EXPERIMENTAL_TableFeature(),
-                            ],
-                          }),
-                        },
-                        {
-                          name: 'CTA_link',
-                          type: 'group',
-                          label: {
-                            en: 'CTA Link',
-                            de: '',
-                          },
-                          fields: [
-                            {
-                              name: 'label',
-                              type: 'text',
-                              label: {
-                                en: 'CTA Label',
-                                de: '',
-                              },
-                            },
-                            {
-                              name: 'url',
-                              type: 'text',
-                              label: {
-                                en: 'URL',
-                                de: 'URL',
-                              },
-                            },
-                            {
-                              name: 'target',
-                              type: 'select',
-                              label: {
-                                en: 'Target',
-                                de: 'Ziel',
-                              },
-                              options: [
-                                { label: { en: 'Same Tab', de: 'Gleiches Tab' }, value: '_self' },
-                                { label: { en: 'New Tab', de: 'Neues Tab' }, value: '_blank' },
-                              ],
-                              defaultValue: '_self',
-                            },
-                          ],
-                        },
+                      name: 'url',
+                      type: 'text',
+                      label: {
+                        en: 'URL',
+                        de: 'URL',
+                      },
+                    },
+                    {
+                      name: 'target',
+                      type: 'select',
+                      label: {
+                        en: 'Target',
+                        de: 'Ziel',
+                      },
+                      options: [
+                        { label: { en: 'Same Tab', de: 'Gleiches Tab' }, value: '_self' },
+                        { label: { en: 'New Tab', de: 'Neues Tab' }, value: '_blank' },
                       ],
+                      defaultValue: '_self',
                     },
                   ],
                 },

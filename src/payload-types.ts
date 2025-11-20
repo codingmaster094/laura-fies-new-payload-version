@@ -846,63 +846,53 @@ export interface UnternehmenBlock {
   MainSection?:
     | {
         Heading?: string | null;
-        subSection?:
+        choise_slider?:
           | {
-              Data?:
+              'Slider Item'?:
                 | {
-                    slider?:
-                      | {
-                          'Slider Item'?:
-                            | {
-                                sliderImage?: (string | null) | Media;
-                                Heading?: string | null;
-                                richText?: {
-                                  root: {
-                                    type: string;
-                                    children: {
-                                      type: any;
-                                      version: number;
-                                      [k: string]: unknown;
-                                    }[];
-                                    direction: ('ltr' | 'rtl') | null;
-                                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                                    indent: number;
-                                    version: number;
-                                  };
-                                  [k: string]: unknown;
-                                } | null;
-                                id?: string | null;
-                              }[]
-                            | null;
-                          'CTA Item'?:
-                            | {
-                                CTAHeading?: string | null;
-                                richText?: {
-                                  root: {
-                                    type: string;
-                                    children: {
-                                      type: any;
-                                      version: number;
-                                      [k: string]: unknown;
-                                    }[];
-                                    direction: ('ltr' | 'rtl') | null;
-                                    format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-                                    indent: number;
-                                    version: number;
-                                  };
-                                  [k: string]: unknown;
-                                } | null;
-                                CTA_link?: {
-                                  label?: string | null;
-                                  url?: string | null;
-                                  target?: ('_self' | '_blank') | null;
-                                };
-                                id?: string | null;
-                              }[]
-                            | null;
-                          id?: string | null;
-                        }[]
-                      | null;
+                    sliderImage?: (string | null) | Media;
+                    Heading?: string | null;
+                    richText?: {
+                      root: {
+                        type: string;
+                        children: {
+                          type: any;
+                          version: number;
+                          [k: string]: unknown;
+                        }[];
+                        direction: ('ltr' | 'rtl') | null;
+                        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                        indent: number;
+                        version: number;
+                      };
+                      [k: string]: unknown;
+                    } | null;
+                    id?: string | null;
+                  }[]
+                | null;
+              'CTA Item'?:
+                | {
+                    CTAHeading?: string | null;
+                    richText?: {
+                      root: {
+                        type: string;
+                        children: {
+                          type: any;
+                          version: number;
+                          [k: string]: unknown;
+                        }[];
+                        direction: ('ltr' | 'rtl') | null;
+                        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+                        indent: number;
+                        version: number;
+                      };
+                      [k: string]: unknown;
+                    } | null;
+                    CTA_link?: {
+                      label?: string | null;
+                      url?: string | null;
+                      target?: ('_self' | '_blank') | null;
+                    };
                     id?: string | null;
                   }[]
                 | null;
@@ -1362,38 +1352,28 @@ export interface UnternehmenBlockSelect<T extends boolean = true> {
     | T
     | {
         Heading?: T;
-        subSection?:
+        choise_slider?:
           | T
           | {
-              Data?:
+              'Slider Item'?:
                 | T
                 | {
-                    slider?:
+                    sliderImage?: T;
+                    Heading?: T;
+                    richText?: T;
+                    id?: T;
+                  };
+              'CTA Item'?:
+                | T
+                | {
+                    CTAHeading?: T;
+                    richText?: T;
+                    CTA_link?:
                       | T
                       | {
-                          'Slider Item'?:
-                            | T
-                            | {
-                                sliderImage?: T;
-                                Heading?: T;
-                                richText?: T;
-                                id?: T;
-                              };
-                          'CTA Item'?:
-                            | T
-                            | {
-                                CTAHeading?: T;
-                                richText?: T;
-                                CTA_link?:
-                                  | T
-                                  | {
-                                      label?: T;
-                                      url?: T;
-                                      target?: T;
-                                    };
-                                id?: T;
-                              };
-                          id?: T;
+                          label?: T;
+                          url?: T;
+                          target?: T;
                         };
                     id?: T;
                   };
