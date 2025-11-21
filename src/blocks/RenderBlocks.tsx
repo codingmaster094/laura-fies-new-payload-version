@@ -8,6 +8,7 @@ import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import PersonalvermittlungBlock from '@/blocks/Personalvermittlung/Component'
 import UnternehmenBlock from '@/blocks/Unternehmen/Component'
+import OffeneStellenBlock from '@/blocks/offeneStellen/Component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
@@ -17,6 +18,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   mediaBlock: MediaBlock,
   personalvermittlung: PersonalvermittlungBlock,
   unternehmen: UnternehmenBlock,
+  offeneStellen: OffeneStellenBlock,
 }
 
 export const RenderBlocks: React.FC<{

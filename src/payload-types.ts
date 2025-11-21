@@ -209,6 +209,7 @@ export interface Page {
     | FormBlock
     | PersonalvermittlungBlock
     | UnternehmenBlock
+    | OffeneStellenBlock
   )[];
   meta?: {
     title?: string | null;
@@ -932,6 +933,56 @@ export interface UnternehmenBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OffeneStellenBlock".
+ */
+export interface OffeneStellenBlock {
+  heading?: string | null;
+  aboutImage?: (string | null) | Media;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  links?:
+    | {
+        link: {
+          type?: ('reference' | 'custom') | null;
+          newTab?: boolean | null;
+          reference?:
+            | ({
+                relationTo: 'pages';
+                value: string | Page;
+              } | null)
+            | ({
+                relationTo: 'posts';
+                value: string | Post;
+              } | null);
+          url?: string | null;
+          label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'outline') | null;
+        };
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'offeneStellen';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1242,6 +1293,7 @@ export interface PagesSelect<T extends boolean = true> {
         formBlock?: T | FormBlockSelect<T>;
         personalvermittlung?: T | PersonalvermittlungBlockSelect<T>;
         unternehmen?: T | UnternehmenBlockSelect<T>;
+        offeneStellen?: T | OffeneStellenBlockSelect<T>;
       };
   meta?:
     | T
@@ -1409,6 +1461,32 @@ export interface UnternehmenBlockSelect<T extends boolean = true> {
                     id?: T;
                   };
               id?: T;
+            };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "OffeneStellenBlock_select".
+ */
+export interface OffeneStellenBlockSelect<T extends boolean = true> {
+  heading?: T;
+  aboutImage?: T;
+  richText?: T;
+  links?:
+    | T
+    | {
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
             };
         id?: T;
       };

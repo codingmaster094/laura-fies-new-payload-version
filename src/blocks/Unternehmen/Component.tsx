@@ -230,7 +230,7 @@ export const UnternehmenBlock: React.FC<UnternehmenBlockProps> = ({ MainSection 
                           ))}
                       </Swiper>
                       <div className="container">
-                        <div className="">
+                        <div className="p-32 my-64 space-y-24 text-center">
                           <div className="flex flex-col items-center gap-24">
                             <h2 className="text-h2/snug text-center">{ctaItems.CTAHeading}</h2>
                             <div className="line max-w-225 w-full border-1 border-solid border-grey1"></div>
