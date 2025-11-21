@@ -210,6 +210,7 @@ export interface Page {
     | PersonalvermittlungBlock
     | UnternehmenBlock
     | OffeneStellenBlock
+    | FAQBlock
   )[];
   meta?: {
     title?: string | null;
@@ -983,6 +984,52 @@ export interface OffeneStellenBlock {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock".
+ */
+export interface FAQBlock {
+  Heading?: string | null;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  FAQdata?:
+    | {
+        Heading?: string | null;
+        richText?: {
+          root: {
+            type: string;
+            children: {
+              type: any;
+              version: number;
+              [k: string]: unknown;
+            }[];
+            direction: ('ltr' | 'rtl') | null;
+            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+            indent: number;
+            version: number;
+          };
+          [k: string]: unknown;
+        } | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'faq';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1294,6 +1341,7 @@ export interface PagesSelect<T extends boolean = true> {
         personalvermittlung?: T | PersonalvermittlungBlockSelect<T>;
         unternehmen?: T | UnternehmenBlockSelect<T>;
         offeneStellen?: T | OffeneStellenBlockSelect<T>;
+        faq?: T | FAQBlockSelect<T>;
       };
   meta?:
     | T
@@ -1488,6 +1536,23 @@ export interface OffeneStellenBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FAQBlock_select".
+ */
+export interface FAQBlockSelect<T extends boolean = true> {
+  Heading?: T;
+  richText?: T;
+  FAQdata?:
+    | T
+    | {
+        Heading?: T;
+        richText?: T;
         id?: T;
       };
   id?: T;

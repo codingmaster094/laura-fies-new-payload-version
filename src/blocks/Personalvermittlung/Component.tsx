@@ -110,14 +110,14 @@ export const PersonalvermittlungBlock: React.FC<PersonalvermittlungBlockProps> =
                     height={900}
                     fetchPriority="high"
                     sizes="(max-width: 1024px) 100vw, 1920px"
-                    className="relative lg:sticky top-0 lg:top-50 xxl:top-0 xxl:relative w-full h-auto object-cover"
+                    className="relative! lg:sticky! top-0! lg:top-50! xxl:top-0! xxl:relative! w-full! h-auto! object-cover!"
                   />
                 ) : (
                   <ImageMedia
                     resource={aboutImage}
                     fill
                     alt={''}
-                    className="relative lg:sticky top-0 lg:top-50 xxl:top-0 xxl:relative w-full h-auto object-cover"
+                    className="relative! lg:sticky! top-0! lg:top-50! xxl:top-0! xxl:relative! w-full! h-auto! object-cover!"
                   />
                 )
               ) : null}

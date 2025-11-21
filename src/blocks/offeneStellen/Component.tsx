@@ -8,9 +8,11 @@ import Link from 'next/link'
 import Lenis from '@studio-freight/lenis'
 
 type LinkItem = {
-  label?: string
-  url?: string
-  appearance?: 'default' | 'outline' | string
+  link?: {
+    label?: string
+    url?: string
+    appearance?: 'default' | 'outline' | string
+  }
 }
 
 type OffeneStellenBlockProps = {
@@ -110,25 +112,24 @@ export const OffeneStellenBlock: React.FC<OffeneStellenBlockProps> = ({
               </div>
               {Array.isArray(links) && links.length > 0 && (
                 <div className="mt-8">
-                  {links.map((l, i) => (
-                    <Link
-                      key={i}
-                      href={l.url || '#'}
-                      className={`btn-dark block mt-24`}
-                      aria-label={l.label || 'link'}
-                    >
-                      {l.label || l.url}
-                    </Link>
-                  ))}
+                  {links.map((l, i) => {
+                    const href = l?.link?.url || '#'
+                    const label = l?.link?.label || 'link'
+                    return (
+                      <Link key={i} href={href} className="btn-dark block mt-24" aria-label={label}>
+                        {label}
+                      </Link>
+                    )
+                  })}
                 </div>
               )}
             </div>
-            <div className="w-full lg:w-1/2 xxl:w-full xxl:-mr-[calc((100vw-1470px)/2)] relative lg:sticky lg:top-50">
+            <div className="w-full lg:w-1/2 xxl:w-full xxl:-mr-[calc((100vw-1470px)/2)] relative lg:sticky lg:top-50 aspect-2/1">
               {aboutImage ? (
                 typeof aboutImage === 'string' ? (
                   <Image
                     src={aboutImage}
-                    alt={heading || 'Personalvermittlung Image'}
+                    alt={heading || 'Image'}
                     role="img"
                     width={1920}
                     height={900}
@@ -141,7 +142,7 @@ export const OffeneStellenBlock: React.FC<OffeneStellenBlockProps> = ({
                     resource={aboutImage}
                     fill
                     alt={''}
-                    className="relative lg:sticky lg:top-50  object-cover"
+                    className="relative lg:sticky top-0 lg:top-50 xxl:top-0 object-cover"
                   />
                 )
               ) : null}

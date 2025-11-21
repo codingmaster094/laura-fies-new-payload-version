@@ -9,6 +9,7 @@ import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import PersonalvermittlungBlock from '@/blocks/Personalvermittlung/Component'
 import UnternehmenBlock from '@/blocks/Unternehmen/Component'
 import OffeneStellenBlock from '@/blocks/offeneStellen/Component'
+import FAQBlock from '@/blocks/FAQ/Component'
 
 const blockComponents: Record<string, React.ComponentType<any>> = {
   archive: ArchiveBlock,
@@ -19,6 +20,7 @@ const blockComponents: Record<string, React.ComponentType<any>> = {
   personalvermittlung: PersonalvermittlungBlock,
   unternehmen: UnternehmenBlock,
   offeneStellen: OffeneStellenBlock,
+  faq:FAQBlock
 }
 
 export const RenderBlocks: React.FC<{
