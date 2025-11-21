@@ -13,18 +13,18 @@ type FAQItem = {
 
 type FAQBlockProps = {
   blockType?: 'faq'
-  // Your Payload block uses `FAQdata` (an array of items). Keep both prop names for compatibility.
-  FAQdata?: FAQItem[]
-  MainSection?: FAQItem[] // optional if you used different prop earlier
+  Heading?: string // Block Heading
+  richText?: any // Block Description richText
+  FAQdata?: FAQItem[] // Array of FAQ items
 }
 
-export const FAQBlock: React.FC<FAQBlockProps> = ({ FAQdata, MainSection }) => {
+export const FAQBlock: React.FC<FAQBlockProps> = ({ FAQdata, Heading, richText }) => {
   const lenisRef = useRef<Lenis | null>(null)
   const sections: FAQItem[] = Array.isArray(FAQdata)
     ? FAQdata
-    : Array.isArray(MainSection)
-    ? MainSection
-    : []
+    : Array.isArray(FAQdata)
+      ? FAQdata
+      : []
 
   useEffect(() => {
     const scroller = new Lenis({
@@ -49,116 +49,108 @@ export const FAQBlock: React.FC<FAQBlockProps> = ({ FAQdata, MainSection }) => {
     }
   }, [])
 
-  // simple accordion open state
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
-
   if (sections.length === 0) return null
-
-  // Helper to render richText data — best-effort fallback.
-  // NOTE: Lexical richtext from Payload can be saved in different shapes.
-  // Replace/extend this function to use a proper converter from Lexical -> HTML if you have one.
-  const renderRichText = (rt: any) => {
-    if (!rt && rt !== 0) return null
-
-    // If the editor saved HTML directly (string)
-    if (typeof rt === 'string') {
-      return <div dangerouslySetInnerHTML={{ __html: rt }} />
-    }
-
-    // If there is an 'html' property
-    if (typeof rt === 'object' && rt.html && typeof rt.html === 'string') {
-      return <div dangerouslySetInnerHTML={{ __html: rt.html }} />
-    }
-
-    // If Lexical JSON is present (common shape: rt.root.children...), there's no universal HTML converter here.
-    // We'll attempt a minimal fallback: extract plain text paragraphs.
-    try {
-      if (typeof rt === 'object' && rt.root && Array.isArray(rt.root.children)) {
-        const paragraphs: string[] = []
-        for (const node of rt.root.children) {
-          if (node.type === 'paragraph' && Array.isArray(node.children)) {
-            const text = node.children.map((c: any) => c.text ?? '').join('')
-            paragraphs.push(text)
-          } else if (node.type === 'heading' && Array.isArray(node.children)) {
-            const text = node.children.map((c: any) => c.text ?? '').join('')
-            paragraphs.push(`<strong>${text}</strong>`)
-          } else {
-            // try to stringify small text nodes
-            if (node.children && Array.isArray(node.children)) {
-              const text = node.children.map((c: any) => c.text ?? '').join('')
-              if (text) paragraphs.push(text)
-            }
-          }
-        }
-        return (
-          <div>
-            {paragraphs.map((p, i) => (
-              // if string already contains html tags from above, render as html
-              <p key={i} dangerouslySetInnerHTML={{ __html: p }} />
-            ))}
-          </div>
-        )
-      }
-    } catch (e) {
-      // ignore and fallback
-      // console.warn('Failed to parse lexical shape', e)
-    }
-
-    // Last-resort: JSON dump (developer-only — consider removing in production)
-    return (
-      <pre style={{ whiteSpace: 'pre-wrap', fontSize: 14 }}>
-        {JSON.stringify(rt, null, 2)}
-      </pre>
-    )
-  }
-
+  console.log('sections', Heading, richText)
   return (
-    <section className="faq-block max-w-5xl mx-auto py-12 px-4">
-      <div className="faq-grid space-y-6">
-        {sections.map((item, idx) => {
-          const isOpen = openIndex === idx
-          return (
-            <div
-              key={idx}
-              className="faq-item border border-gray-200 rounded-lg overflow-hidden"
-            >
-              <button
-                type="button"
-                aria-expanded={isOpen}
-                aria-controls={`faq-panel-${idx}`}
-                onClick={() => setOpenIndex(isOpen ? null : idx)}
-                className="faq-question w-full text-left px-5 py-4 flex justify-between items-center"
-                style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-              >
-                <span className="text-lg font-medium">
-                  {item?.Heading ?? `Question ${idx + 1}`}
-                </span>
-                <span
-                  aria-hidden
-                  style={{
-                    transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-                    transition: 'transform 200ms ease',
-                  }}
-                >
-                  {/* simple plus/minus indicator */}
-                  {isOpen ? '−' : '+'}
-                </span>
-              </button>
+    <section className="py-20">
+      <div className="container">
+        <div className="flex flex-col gap-32 lg:gap-48 justify-center items-center text-center">
+          <h2 className="text-h2/snug font-jakarta font-normal">
+            {Heading || 'FAQ zur Personalvermittlung in Nordrhein-Westfalen'}
+          </h2>
+          <div className="line max-w-225 w-full border-1 border-solid border-grey1"></div>
+        </div>
+        <div>
+          {richText?.root?.children &&
+            richText?.root?.children.map((block, index) => {
+              if (block.type === 'list') {
+                return (
+                  <ul key={index} className="pl-20 list-disc space-y-8">
+                    {block.children.map((item, i) => (
+                      <li key={i}>{item.children[0].text}</li>
+                    ))}
+                  </ul>
+                )
+              } else if (block.type === 'paragraph') {
+                return <p key={index}>{block.children.map((child) => child.text).join(' ')}</p>
+              } else if (block.type === 'heading') {
+                return (
+                  <span
+                    key={index}
+                    className="block font-medium"
+                    dangerouslySetInnerHTML={{
+                      __html: block.children.map((child) => child.text).join(' '),
+                    }}
+                  ></span>
+                )
+              } else {
+                return null
+              }
+            })}
+        </div>
+        <div className="space-y-32 mt-32 lg:mt-48">
+          {FAQdata &&
+            FAQdata.map((faq, index) => {
+              console.log('faq', faq)
+              const content = faq.richText?.root?.children || []
 
-              <div
-                id={`faq-panel-${idx}`}
-                role="region"
-                aria-labelledby={`faq-button-${idx}`}
-                className="faq-answer px-5 pb-4"
-                style={{
-                  display: isOpen ? 'block' : 'none',
-                }}
-              >
-                {renderRichText(item?.richText)}
-              </div>
-            </div>
-          )
-        })}
+              const renderContent = (nodes) => {
+                return nodes.map((node, i) => {
+                  if (node.type === 'paragraph') {
+                    const text = node.children?.map((c) => c.text).join(' ') || ''
+                    return (
+                      <p key={i} className="mb-4">
+                        {text}
+                      </p>
+                    )
+                  }
+                  if (node.type === 'list') {
+                    const items = node.children || []
+                    return (
+                      <ul key={i} className="list-disc pl-24 mb-20 space-y-8">
+                        {items.map((item, j) => {
+                          const itemText = item.children?.map((c) => c.text).join(' ') || ''
+                          return <li key={j}>{itemText}</li>
+                        })}
+                      </ul>
+                    )
+                  }
+                  if (node.type === 'listitem') {
+                    const itemText = node.children?.map((c) => c.text).join(' ') || ''
+                    return <li key={i}>{itemText}</li>
+                  }
+                  if (node.type === 'linebreak') {
+                    return <br key={i} />
+                  }
+                  if (node.children) {
+                    return <React.Fragment key={i}>{renderContent(node.children)}</React.Fragment>
+                  }
+                  return null
+                })
+              }
+
+              return (
+                <div
+                  key={faq.id || index}
+                  className="accordion-item border border-dark overflow-hidden active"
+                >
+                  <button
+                    className="accordion-header w-full flex justify-between items-center px-24 py-24 text-left font-jakarta text-h3/snug cursor-pointer"
+                    aria-label={faq.Heading}
+                  >
+                    <span>{faq.Heading}</span>
+                    {/* <span className="icon">-</span> */}
+                  </button>
+
+                  <div className="accordion-content overflow-hidden transition-all duration-500 ease-in-out">
+                    <div className="px-24 pb-24 text-dark text-base_sm leading-relaxed space-y-16">
+                      {renderContent(content)}
+                    </div>
+                  </div>
+                </div>
+              )
+            })}
+        </div>
       </div>
     </section>
   )
